@@ -25,7 +25,7 @@ Then open http://localhost:5174.
 
 ## Before showing it to Cathedis
 
-- Put your name in the top ribbon and footer (search for "Your Name").
+- Put your name in the top ribbon and footer (search for "Imuneeess").
 - Swap the placeholder colors at the top of `css/style.css` for the official brand colors.
 - Replace sample figures (stats on the home page, `CITIES` in `js/scenes/common.js`, pricing in `js/scenes/sellers.js`) with real numbers if they share them.
 - Keep the "unofficial concept" labels until they approve the design. Pages include `noindex` so search engines skip them if you share a link.
