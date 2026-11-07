@@ -19,7 +19,7 @@ net.userData.routes.forEach((r) => { r.tube.material.opacity = 0.12; r.box.visib
 const van = createVan();
 van.scale.setScalar(0.17);
 scene.add(van);
-const fromLabel = labelSprite('Casablanca', { bg: '#0e1b3d', scale: 0.42 });
+const fromLabel = labelSprite('Casablanca', { bg: '#1c1c1c', scale: 0.42 });
 const toLabel = labelSprite('', { scale: 0.42 });
 scene.add(fromLabel, toLabel);
 fromLabel.position.copy(project(33.57, -7.59)).setY(1.05);
@@ -28,7 +28,7 @@ let route = null, target = 0, progress = 0;
 const focus = new THREE.Vector3(), camGoal = new THREE.Vector3(0, 6, 5);
 
 function setLabel(sprite, text) {
-  const s = labelSprite(text, { bg: '#ff5a1f', scale: 0.42 });
+  const s = labelSprite(text, { bg: '#e30613', scale: 0.42 });
   sprite.material.map.dispose();
   sprite.material.map = s.material.map;
 }

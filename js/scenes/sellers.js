@@ -38,7 +38,7 @@ calc();
 const canvas = $('#stack-canvas');
 const { scene, camera, loop } = createStage(canvas, { camPos: [3.5, 4.5, 6.5], fov: 40 });
 addLights(scene, { shadowSize: 5 });
-scene.add(shadowFloor(20, 0.3));
+scene.add(shadowFloor(20, 0.22));
 const hemi = scene.children.find((o) => o.isHemisphereLight);
 hemi.intensity = 1.1;
 

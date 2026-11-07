@@ -60,7 +60,7 @@ const seg = (p, a, b) => THREE.MathUtils.clamp((p - a) / (b - a), 0, 1);
   const table = new THREE.Mesh(new RoundedBoxGeometry(2.6, 0.2, 1.8, 3, 0.06), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6 }));
   table.position.set(0, 0.9, 0);
   table.castShadow = table.receiveShadow = true;
-  const legMat = new THREE.MeshStandardMaterial({ color: COLORS.ink });
+  const legMat = new THREE.MeshStandardMaterial({ color: 0x2b2b2b });
   [[-1.1, -0.7], [1.1, -0.7], [-1.1, 0.7], [1.1, 0.7]].forEach(([x, z]) => {
     const l = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.9, 0.08), legMat);
     l.position.set(x, 0.45, z);
@@ -69,7 +69,7 @@ const seg = (p, a, b) => THREE.MathUtils.clamp((p - a) / (b - a), 0, 1);
   });
   scene.add(table);
   // items going into the box
-  const items = [0xff5a1f, 0x12b39a, 0xffd23f].map((c, i) => {
+  const items = [0xe30613, 0x2b2b2b, 0xb00010].map((c, i) => {
     const m = new THREE.Mesh(new RoundedBoxGeometry(0.3, 0.22, 0.22, 2, 0.05), new THREE.MeshStandardMaterial({ color: c, roughness: 0.4 }));
     m.userData.start = new THREE.Vector3(-0.9 + i * 0.35, 1.12, 0.55);
     m.castShadow = true;
@@ -78,13 +78,13 @@ const seg = (p, a, b) => THREE.MathUtils.clamp((p - a) / (b - a), 0, 1);
   });
 
   // --- station 2: conveyor + scanner
-  const belt = new THREE.Mesh(new RoundedBoxGeometry(5, 0.18, 1.3, 3, 0.08), new THREE.MeshStandardMaterial({ color: 0x2a3a66, roughness: 0.7 }));
+  const belt = new THREE.Mesh(new RoundedBoxGeometry(5, 0.18, 1.3, 3, 0.08), new THREE.MeshStandardMaterial({ color: 0x2b2b2b, roughness: 0.7 }));
   belt.position.set(4.2, 0.9, 0);
   belt.receiveShadow = belt.castShadow = true;
   scene.add(belt);
   const stripes = [];
   for (let i = 0; i < 14; i++) {
-    const s = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.01, 1.25), new THREE.MeshStandardMaterial({ color: 0x4b5d94 }));
+    const s = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.01, 1.25), new THREE.MeshStandardMaterial({ color: 0x4a4a4a }));
     s.position.set(1.9 + i * 0.35, 1.0, 0);
     scene.add(s);
     stripes.push(s);
@@ -103,12 +103,12 @@ const seg = (p, a, b) => THREE.MathUtils.clamp((p - a) / (b - a), 0, 1);
   arch.position.x = 4.2;
   arch.traverse((o) => o.isMesh && (o.castShadow = true));
   scene.add(arch);
-  const scanned = labelSprite('✓ Scanned · CTH-0007', { bg: '#12b39a', scale: 0.8 });
+  const scanned = labelSprite('✓ Scanned · CTH-0007', { bg: '#1c1c1c', scale: 0.8 });
   scanned.position.set(4.2, 2.9, 0);
   scene.add(scanned);
 
   // --- station 3: road + van
-  const road = new THREE.Mesh(new THREE.PlaneGeometry(40, 3), new THREE.MeshStandardMaterial({ color: 0xe9e2d6, roughness: 1 }));
+  const road = new THREE.Mesh(new THREE.PlaneGeometry(40, 3), new THREE.MeshStandardMaterial({ color: 0xeeeeee, roughness: 1 }));
   road.rotation.x = -Math.PI / 2;
   road.position.set(20, 0.005, -0.2);
   road.receiveShadow = true;
@@ -123,8 +123,8 @@ const seg = (p, a, b) => THREE.MathUtils.clamp((p - a) / (b - a), 0, 1);
   van.scale.setScalar(0.8);
   scene.add(van);
   // little trees along the road
-  const treeMat = new THREE.MeshStandardMaterial({ color: COLORS.teal, roughness: 0.6 });
-  const trunkMat = new THREE.MeshStandardMaterial({ color: 0x8a5a2b });
+  const treeMat = new THREE.MeshStandardMaterial({ color: 0xdedede, roughness: 0.6, flatShading: true });
+  const trunkMat = new THREE.MeshStandardMaterial({ color: 0x9a9a9a });
   for (let i = 0; i < 9; i++) {
     const tr = new THREE.Group();
     const top = new THREE.Mesh(new THREE.IcosahedronGeometry(0.45, 0), treeMat);
@@ -143,29 +143,29 @@ const seg = (p, a, b) => THREE.MathUtils.clamp((p - a) / (b - a), 0, 1);
   const house = new THREE.Group();
   const wall = new THREE.Mesh(new RoundedBoxGeometry(4, 3.2, 0.3, 3, 0.06), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 }));
   wall.position.y = 1.6;
-  const door = new THREE.Mesh(new RoundedBoxGeometry(1, 2, 0.1, 3, 0.04), new THREE.MeshStandardMaterial({ color: 0x12b39a, roughness: 0.5 }));
+  const door = new THREE.Mesh(new RoundedBoxGeometry(1, 2, 0.1, 3, 0.04), new THREE.MeshStandardMaterial({ color: COLORS.brand, roughness: 0.5 }));
   door.position.set(0, 1.0, 0.18);
-  const arc = new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.06, 8, 24, Math.PI), new THREE.MeshStandardMaterial({ color: COLORS.sun }));
+  const arc = new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.06, 8, 24, Math.PI), new THREE.MeshStandardMaterial({ color: COLORS.brand2 }));
   arc.position.set(0, 2.0, 0.2);
-  const knob = new THREE.Mesh(new THREE.SphereGeometry(0.05), new THREE.MeshStandardMaterial({ color: COLORS.sun, metalness: 0.8 }));
+  const knob = new THREE.Mesh(new THREE.SphereGeometry(0.05), new THREE.MeshStandardMaterial({ color: 0xdddddd, metalness: 0.8 }));
   knob.position.set(0.32, 1.0, 0.26);
   const mat = new THREE.Mesh(new RoundedBoxGeometry(1.3, 0.04, 0.7, 2, 0.02), new THREE.MeshStandardMaterial({ color: COLORS.brand }));
   mat.position.set(0, 0.02, 0.7);
   const plant = new THREE.Mesh(new THREE.IcosahedronGeometry(0.35, 0), treeMat);
   plant.position.set(1.3, 0.55, 0.5);
-  const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.16, 0.4, 16), new THREE.MeshStandardMaterial({ color: COLORS.brand2 }));
+  const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.16, 0.4, 16), new THREE.MeshStandardMaterial({ color: 0x2b2b2b }));
   pot.position.set(1.3, 0.2, 0.5);
   house.add(wall, door, arc, knob, mat, plant, pot);
   house.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
   house.position.set(HOUSE_X, 0, -3);
   scene.add(house);
-  const delivered = labelSprite('✓ Livré · Delivered', { bg: '#ff5a1f', scale: 0.9 });
+  const delivered = labelSprite('✓ Livré · Delivered', { bg: '#e30613', scale: 0.9 });
   delivered.position.set(HOUSE_X, 2.4, -1.6);
   scene.add(delivered);
 
   // confetti
   const confetti = [];
-  const confColors = [COLORS.brand, COLORS.sun, COLORS.teal, COLORS.ink];
+  const confColors = [COLORS.brand, 0xffffff, COLORS.brand2, 0xdddddd];
   for (let i = 0; i < 60; i++) {
     const c = new THREE.Mesh(new THREE.PlaneGeometry(0.08, 0.14), new THREE.MeshBasicMaterial({ color: confColors[i % 4], side: THREE.DoubleSide }));
     c.userData = { v: new THREE.Vector3((Math.random() - 0.5) * 3, 2 + Math.random() * 3, (Math.random() - 0.5) * 2), r: Math.random() * 10 };

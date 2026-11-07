@@ -6,8 +6,9 @@ export { THREE, RoundedBoxGeometry };
 export const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const COLORS = {
-  brand: 0xff5a1f, brand2: 0xff8a3d, ink: 0x0e1b3d, sun: 0xffd23f, teal: 0x12b39a,
-  card: 0xd9a066, cardDark: 0xb97f45, sand: 0xf3dcc0, white: 0xffffff,
+  // Red & white: swap brand for the exact official Cathedis red if you have it.
+  brand: 0xe30613, brand2: 0xb00010, ink: 0x1c1c1c, grey: 0xd9d9d9,
+  card: 0xf7f7f7, white: 0xffffff,
 };
 
 /** Renderer + scene + camera bound to a canvas, with resize, smoothed mouse and offscreen pausing. */
@@ -60,7 +61,7 @@ export function createStage(canvas, { camPos = [0, 4, 10], fov = 40, shadows = t
 }
 
 export function addLights(scene, { shadowSize = 8 } = {}) {
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xffd9c2, 1.6));
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xe6e6e6, 1.6));
   const sun = new THREE.DirectionalLight(0xffffff, 2.4);
   sun.position.set(5, 10, 6);
   sun.castShadow = true;
@@ -73,7 +74,7 @@ export function addLights(scene, { shadowSize = 8 } = {}) {
 }
 
 export function shadowFloor(size = 40, opacity = 0.12) {
-  const m = new THREE.Mesh(new THREE.PlaneGeometry(size, size), new THREE.ShadowMaterial({ opacity, color: 0x0e1b3d }));
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(size, size), new THREE.ShadowMaterial({ opacity, color: 0x000000 }));
   m.rotation.x = -Math.PI / 2;
   m.receiveShadow = true;
   return m;
@@ -91,10 +92,10 @@ function canvasTex(w, h, draw) {
 }
 
 function cardboard(ctx, w, h) {
-  ctx.fillStyle = '#d9a066';
+  ctx.fillStyle = '#f7f7f7';
   ctx.fillRect(0, 0, w, h);
   for (let i = 0; i < 1400; i++) {
-    ctx.fillStyle = `rgba(120,70,20,${Math.random() * 0.06})`;
+    ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.025})`;
     ctx.fillRect(Math.random() * w, Math.random() * h, 2 + Math.random() * 6, 1);
   }
 }
@@ -104,38 +105,41 @@ const sideTex = () => canvasTex(512, 384, (ctx, w, h) => {
   // shipping label
   ctx.fillStyle = '#fff';
   ctx.fillRect(40, 60, 250, 170);
-  ctx.fillStyle = '#ff5a1f';
+  ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(40, 60, 250, 170);
+  ctx.fillStyle = '#e30613';
   ctx.fillRect(40, 60, 250, 46);
   ctx.fillStyle = '#fff';
   ctx.font = '800 30px "Bricolage Grotesque", sans-serif';
   ctx.fillText('CATHEDIS', 56, 94);
-  ctx.fillStyle = '#0e1b3d';
+  ctx.fillStyle = '#1c1c1c';
   for (let i = 0; i < 26; i++) ctx.fillRect(56 + i * 8, 124, i % 3 ? 3 : 5, 56);
   ctx.font = '600 16px Inter, sans-serif';
   ctx.fillText('CTH-2026-MA-0007', 56, 210);
   // arrows "this side up"
-  ctx.strokeStyle = 'rgba(14,27,61,0.55)';
+  ctx.strokeStyle = 'rgba(0,0,0,0.35)';
   ctx.lineWidth = 6;
   [370, 420].forEach((x) => {
     ctx.beginPath(); ctx.moveTo(x, 150); ctx.lineTo(x, 80); ctx.moveTo(x - 16, 98); ctx.lineTo(x, 80); ctx.lineTo(x + 16, 98); ctx.stroke();
   });
-  ctx.fillStyle = 'rgba(14,27,61,0.55)';
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
   ctx.fillRect(350, 160, 90, 6);
   // tape
-  ctx.fillStyle = 'rgba(255,210,63,0.9)';
+  ctx.fillStyle = '#e30613';
   ctx.fillRect(w / 2 - 34, 0, 68, 40);
 });
 
 const topTex = () => canvasTex(512, 512, (ctx, w, h) => {
   cardboard(ctx, w, h);
-  ctx.fillStyle = 'rgba(255,210,63,0.95)';
+  ctx.fillStyle = '#e30613';
   ctx.fillRect(w / 2 - 40, 0, 80, h);
-  ctx.fillStyle = 'rgba(14,27,61,0.8)';
+  ctx.fillStyle = '#ffffff';
   ctx.font = '800 26px "Bricolage Grotesque", sans-serif';
-  ctx.save(); ctx.translate(w / 2 + 10, h / 2 + 70); ctx.rotate(-Math.PI / 2); ctx.fillText('CATHEDIS', 0, 0); ctx.restore();
+  ctx.save(); ctx.translate(w / 2 + 9, h / 2 + 70); ctx.rotate(-Math.PI / 2); ctx.fillText('CATHEDIS', 0, 0); ctx.restore();
 });
 
-export function labelSprite(text, { bg = '#0e1b3d', fg = '#ffffff', scale = 1 } = {}) {
+export function labelSprite(text, { bg = '#1c1c1c', fg = '#ffffff', scale = 1 } = {}) {
   const tex = canvasTex(512, 128, (ctx) => {
     ctx.font = '700 54px "Bricolage Grotesque", sans-serif';
     const w = ctx.measureText(text).width + 60;
@@ -164,7 +168,7 @@ export function createParcel({ size = [1.2, 0.9, 0.9], flaps = false } = {}) {
   const side = new THREE.MeshStandardMaterial({ map: _side, roughness: 0.85 });
   const plain = new THREE.MeshStandardMaterial({ color: COLORS.card, roughness: 0.9 });
   const top = new THREE.MeshStandardMaterial({ map: _top, roughness: 0.85 });
-  const inner = new THREE.MeshStandardMaterial({ color: 0x8a5a2b, roughness: 1 });
+  const inner = new THREE.MeshStandardMaterial({ color: 0xcfcfcf, roughness: 1 });
   const group = new THREE.Group();
   // material order: +x, -x, +y, -y, +z, -z
   const body = new THREE.Mesh(new RoundedBoxGeometry(w, h, d, 3, 0.03), [plain, plain, flaps ? inner : top, plain, side, side]);
@@ -190,7 +194,7 @@ export function createParcel({ size = [1.2, 0.9, 0.9], flaps = false } = {}) {
       mk(w, d / 2, 0, -d / 2, 'x', 1), mk(w, d / 2, 0, d / 2, 'x', -1),
       mk(w / 2, d, -w / 2, 0, 'z', 1), mk(w / 2, d, w / 2, 0, 'z', -1),
     ];
-    const tape = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.012, d + 0.02), new THREE.MeshStandardMaterial({ color: COLORS.sun, roughness: 0.4 }));
+    const tape = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.012, d + 0.02), new THREE.MeshStandardMaterial({ color: COLORS.brand, roughness: 0.4 }));
     tape.position.y = h + 0.03;
     tape.scale.z = 0.001;
     group.add(tape);
@@ -217,19 +221,18 @@ export function createVan() {
   const van = new THREE.Group();
   const brand = new THREE.MeshStandardMaterial({ color: COLORS.brand, roughness: 0.45, metalness: 0.1 });
   const white = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
-  const glass = new THREE.MeshStandardMaterial({ color: 0x0e1b3d, roughness: 0.15, metalness: 0.6 });
+  const glass = new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.15, metalness: 0.6 });
   const tire = new THREE.MeshStandardMaterial({ color: 0x1a1f2e, roughness: 0.9 });
   const rim = new THREE.MeshStandardMaterial({ color: 0xdddddd, metalness: 0.8, roughness: 0.3 });
 
   const sideTexture = canvasTex(1024, 512, (ctx, w, h) => {
     ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = '#ff5a1f'; ctx.fillRect(0, h - 150, w, 150);
-    ctx.fillStyle = '#ffd23f'; ctx.fillRect(0, h - 170, w, 20);
-    ctx.fillStyle = '#0e1b3d';
+    ctx.fillStyle = '#e30613'; ctx.fillRect(0, h - 150, w, 150);
+    ctx.fillStyle = '#e30613';
     ctx.font = '800 150px "Bricolage Grotesque", sans-serif';
     ctx.fillText('CATHEDIS', 70, 250);
     ctx.font = '600 44px Inter, sans-serif';
-    ctx.fillStyle = '#ff5a1f';
+    ctx.fillStyle = '#6e6e6e';
     ctx.fillText('Livraison partout au Maroc', 76, 320);
   });
   const cargoSide = new THREE.MeshStandardMaterial({ map: sideTexture, roughness: 0.5 });
@@ -247,9 +250,9 @@ export function createVan() {
   wind.rotation.z = -0.25;
   const sideWin = new THREE.Mesh(new RoundedBoxGeometry(0.6, 0.45, 1.5, 2, 0.04), glass);
   sideWin.position.set(1.5, 1.38, 0);
-  const bumper = new THREE.Mesh(new RoundedBoxGeometry(0.25, 0.25, 1.5, 2, 0.08), new THREE.MeshStandardMaterial({ color: 0x2a3a66 }));
+  const bumper = new THREE.Mesh(new RoundedBoxGeometry(0.25, 0.25, 1.5, 2, 0.08), new THREE.MeshStandardMaterial({ color: 0x2b2b2b }));
   bumper.position.set(2.05, 0.55, 0);
-  const lightL = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 12), new THREE.MeshStandardMaterial({ color: 0xfff3b0, emissive: 0xffd23f, emissiveIntensity: 1.5 }));
+  const lightL = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 12), new THREE.MeshStandardMaterial({ color: 0xfff3b0, emissive: 0xffffff, emissiveIntensity: 1.2 }));
   lightL.position.set(2.06, 0.85, 0.52);
   const lightR = lightL.clone(); lightR.position.z = -0.52;
   van.add(cargo, cab, wind, sideWin, bumper, lightL, lightR);
@@ -330,7 +333,7 @@ export function createNetwork({ k = 0.55, labels = true, labelFilter = () => tru
   const tileMat = new THREE.MeshStandardMaterial({ roughness: 0.8 });
   const inst = new THREE.InstancedMesh(hex, tileMat, tiles.length);
   const m = new THREE.Matrix4(), col = new THREE.Color();
-  const palette = [0xf7e3c9, 0xf3d2ad, 0xeec193, 0xffe9d3];
+  const palette = [0xffffff, 0xf6f6f6, 0xeeeeee, 0xfafafa];
   tiles.forEach((tl, i) => {
     const h = 0.06 + Math.max(0, 0.75 - tl.d) * 0.3 + Math.random() * 0.06;
     m.compose(new THREE.Vector3(tl.x, 0, tl.z), new THREE.Quaternion(), new THREE.Vector3(1, h, 1));
@@ -344,7 +347,7 @@ export function createNetwork({ k = 0.55, labels = true, labelFilter = () => tru
 
   // pins
   const pinMat = new THREE.MeshStandardMaterial({ color: COLORS.brand, roughness: 0.4 });
-  const hubMat = new THREE.MeshStandardMaterial({ color: COLORS.ink, roughness: 0.4 });
+  const hubMat = new THREE.MeshStandardMaterial({ color: COLORS.brand2, roughness: 0.4 });
   const pins = CITIES.map((c, i) => {
     const pin = new THREE.Group();
     const head = new THREE.Mesh(new THREE.SphereGeometry(c.hub ? 0.13 : 0.09, 20, 20), c.hub ? hubMat : pinMat);
@@ -359,7 +362,7 @@ export function createNetwork({ k = 0.55, labels = true, labelFilter = () => tru
     head.castShadow = true;
     pin.userData = { city: c, head, ring, index: i };
     if (labels && labelFilter(c)) {
-      const l = labelSprite(c.name, { bg: c.hub ? '#ff5a1f' : '#0e1b3d', scale: 0.55 });
+      const l = labelSprite(c.name, { bg: c.hub ? '#e30613' : '#1c1c1c', scale: 0.55 });
       l.position.y = head.position.y + 0.3;
       pin.add(l);
       pin.userData.label = l;
