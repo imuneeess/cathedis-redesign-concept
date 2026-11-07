@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coverage · Cathedis (redesign concept)</title>
+  <meta name="description" content="Interactive 3D delivery coverage map. Unofficial concept with sample data." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#ff5a1f" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23ff5a1f'/%3E%3Crect x='44' width='12' height='100' fill='%23ffd23f'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <div class="curtain" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="ribbon"><b>Unofficial redesign concept</b> by Your Name · not affiliated with or endorsed by Cathedis · sample data</div>
+
+  <nav class="nav" aria-label="Main">
+    <a href="index.html" class="logo"><i class="logo-mark"></i>cathedis</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="tracking.html">Track</a></li>
+      <li><a href="sellers.html">Sellers</a></li>
+      <li><a href="coverage.html">Coverage</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="tracking.html" class="btn btn-ghost">Track a parcel</a>
+      <a href="sellers.html" class="btn btn-primary">Ship with us <span class="arrow">→</span></a>
+      <button class="burger" aria-label="Menu"><span></span></button>
+    </div>
+  </nav>
+
+  <main class="container coverage">
+    <div class="map-stage reveal">
+      <canvas id="map-canvas" aria-label="Interactive 3D map of delivery cities. Click a pin to see details."></canvas>
+      <button id="overview" class="btn btn-dark" style="position:absolute;left:16px;bottom:16px;z-index:2;padding:10px 18px">⤢ Overview</button>
+    </div>
+    <div class="city-panel">
+      <span class="chip"><i>●</i> Coverage map</span>
+      <h1 class="split" style="font-size:clamp(2.2rem,4vw,3.4rem);margin-bottom:24px">We deliver <span class="hl">there too.</span></h1>
+      <div class="card city-info">
+        <h2>Casablanca</h2>
+        <div class="city-meta">
+          <div><small>Delivery</small><b data-k="eta"></b></div>
+          <div><small>Relay points</small><b data-k="relays"></b></div>
+          <div><small>From hub</small><b data-k="km"></b></div>
+        </div>
+        <p></p>
+      </div>
+      <div class="city-list" aria-label="Cities"></div>
+      <p class="sample" style="color:var(--muted)">Sample delivery times and relay counts for the concept.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="logo"><i class="logo-mark"></i>cathedis</a>
+          <p style="margin-top:16px;max-width:340px">Concept for a modern, animated Cathedis website: fast last-mile delivery and cash-on-delivery across Morocco.</p>
+        </div>
+        <div><h4>Shipping</h4><ul><li><a href="sellers.html">For e-commerce</a></li><li><a href="sellers.html#pricing">Pricing</a></li><li><a href="coverage.html">Coverage</a></li></ul></div>
+        <div><h4>Customers</h4><ul><li><a href="tracking.html">Track a parcel</a></li><li><a href="contact.html">Help</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div><h4>Join</h4><ul><li><a href="contact.html">Become a driver</a></li><li><a href="contact.html">Partnerships</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <span>Unofficial redesign concept by Your Name, created as a proposal for Cathedis.</span>
+        <span>Not affiliated with or endorsed by Cathedis. All figures, prices and tracking data are samples.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+  <script type="module" src="js/scenes/coverage.js"></script>
+</body>
+</html>
